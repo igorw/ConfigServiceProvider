@@ -1,0 +1,18 @@
+{
+    "name": "igorw/ConfigServiceProvider",
+    "type": "library",
+    "description": "A JSON-based config ServiceProvider for Silex.",
+    "keywords": ["silex"],
+    "homepage": "https://github.com/igorw/ConfigServiceProvider",
+    "version": "0.1.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Igor Wiedler",
+            "email": "igor@wiedler.ch"
+        }
+    ],
+    "require": {
+        "silex/silex": ">=1.0.0-dev"
+    }
+}
