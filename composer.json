@@ -1,5 +1,5 @@
 {
-    "name": "igorw/ConfigServiceProvider",
+    "name": "igorw/config-service-provider",
     "type": "library",
     "description": "A JSON-based config ServiceProvider for Silex.",
     "keywords": ["silex"],
@@ -14,5 +14,10 @@
     ],
     "require": {
         "silex/silex": ">=1.0.0-dev"
+    },
+    "autoload": {
+        "psr0": {
+            "Igorw": "src"
+        }
     }
 }
