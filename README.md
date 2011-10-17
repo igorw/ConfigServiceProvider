@@ -52,5 +52,5 @@ Now you can use the pattern in your configuration file.
 
     {
         "db.dbal.class_path": "%dbalpath%",
-        "db.common.class_path": "%dbalpath%/vendor/doctrine-common/lib",
+        "db.common.class_path": "%dbalpath%/vendor/doctrine-common/lib"
     }

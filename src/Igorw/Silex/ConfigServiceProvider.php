@@ -56,13 +56,12 @@ class ConfigServiceProvider implements ServiceProviderInterface
             return $value;
         }
 
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             foreach ($value as $k => $v) {
                 $value[$k] = $this->doReplacements($v);
             }
         }
 
-        return str_replace(array_keys($this->replacements), array_values($this->replacements), $value);
+        return strtr($value, $this->replacements);
     }
 }
