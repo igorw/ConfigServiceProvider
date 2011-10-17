@@ -43,7 +43,7 @@ Or in nginx with fcgi:
 Also, you can pass an array of replacement patterns as second argument.
 
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.json", array(
-        'dbalpath' => __DIR__.'/vendor/doctrine-dbal/lib',
+        'data_path' => __DIR__.'/data',
     ));
 
 Now you can use the pattern in your configuration file.
@@ -51,6 +51,5 @@ Now you can use the pattern in your configuration file.
 **/config/services.json**
 
     {
-        "db.dbal.class_path": "%dbalpath%",
-        "db.common.class_path": "%dbalpath%/vendor/doctrine-common/lib"
+        "xsl.path": "%data_path%/xsl"
     }
