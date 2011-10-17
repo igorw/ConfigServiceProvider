@@ -60,6 +60,8 @@ class ConfigServiceProvider implements ServiceProviderInterface
             foreach ($value as $k => $v) {
                 $value[$k] = $this->doReplacements($v);
             }
+
+            return $value;
         }
 
         return strtr($value, $this->replacements);
