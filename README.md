@@ -39,3 +39,17 @@ that would be:
 Or in nginx with fcgi:
 
     fastcgi_param APP_ENV dev
+
+Also, you can pass an array of replacement patterns as second argument.
+
+    $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.json", array(
+        'data_path' => __DIR__.'/data',
+    ));
+
+Now you can use the pattern in your configuration file.
+
+**/config/services.json**
+
+    {
+        "xsl.path": "%data_path%/xsl"
+    }

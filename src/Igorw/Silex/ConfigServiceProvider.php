@@ -18,9 +18,17 @@ class ConfigServiceProvider implements ServiceProviderInterface
 {
     private $filename;
 
-    public function __construct($filename)
+    private $replacements = array();
+
+    public function __construct($filename, array $replacements = array())
     {
         $this->filename = $filename;
+
+        if ($replacements) {
+            foreach ($replacements as $key => $value) {
+                $this->replacements['%'.$key.'%'] = $value;
+            }
+        }
     }
 
     public function register(Application $app)
@@ -38,7 +46,24 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
 
         foreach ($config as $name => $value) {
-            $app[$name] = $value;
+            $app[$name] = $this->doReplacements($value);
         }
+    }
+
+    private function doReplacements($value)
+    {
+        if (!$this->replacements) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $k => $v) {
+                $value[$k] = $this->doReplacements($v);
+            }
+
+            return $value;
+        }
+
+        return strtr($value, $this->replacements);
     }
 }
