@@ -39,6 +39,6 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             'data' => 'test-replacement'
         )));
 
-        $this->assertEquals($app['data'], 'test-replacement');
+        $this->assertEquals('test-replacement', $app['data']);
     }
 }
