@@ -28,7 +28,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.json"));
 
         $this->assertTrue($app['debug']);
-        $this->assertEquals($app['data'], '%data%');
+        $this->assertEquals('%data%', $app['data']);
     }
 
     public function testRegisterWithReplacement()
