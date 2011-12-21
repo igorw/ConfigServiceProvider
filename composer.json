@@ -16,7 +16,7 @@
         "silex/silex": ">=1.0.0-dev"
     },
     "autoload": {
-        "psr0": {
+        "psr-0": {
             "Igorw": "src"
         }
     }
