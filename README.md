@@ -2,13 +2,6 @@
 
 A JSON-based config ServiceProvider for [Silex](http://silex.sensiolabs.org).
 
-## Autoloader
-
-If your application is defined in `/web/index.php` and the extension is in
-`/vendor/service-provider/config`, do:
-
-    $app['autoloader']->registerNamespace('Igorw', __DIR__.'/../vendor/service-provider/config/src');
-
 ## Usage
 
 Pass the config file's path to the service provider's constructor. This is the
@@ -44,7 +37,7 @@ Also, you can pass an array of replacement patterns as second argument.
 
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.json", array(
         'data_path' => __DIR__.'/data',
-    ));
+    )));
 
 Now you can use the pattern in your configuration file.
 

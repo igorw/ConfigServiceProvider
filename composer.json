@@ -3,7 +3,6 @@
     "type": "library",
     "description": "A JSON-based config ServiceProvider for Silex.",
     "keywords": ["silex"],
-    "homepage": "https://github.com/igorw/ConfigServiceProvider",
     "version": "0.1.0",
     "license": "MIT",
     "authors": [
@@ -16,8 +15,6 @@
         "silex/silex": ">=1.0.0-dev"
     },
     "autoload": {
-        "psr-0": {
-            "Igorw": "src"
-        }
+        "psr-0": { "Igorw\\Silex": "src" }
     }
 }
