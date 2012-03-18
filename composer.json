@@ -9,10 +9,17 @@
         {
             "name": "Igor Wiedler",
             "email": "igor@wiedler.ch"
+        },
+        {
+            "name": "Tim Heil",
+            "email": "tim.heil@webentwickler.cc"
         }
     ],
     "require": {
         "silex/silex": "dev-master"
+    },
+    "suggest": {
+        "symfony/yaml": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Igorw\\Silex": "src" }
