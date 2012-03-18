@@ -41,4 +41,35 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('test-replacement', $app['data']);
     }
+
+    public function testRegisterYamlWithoutReplacement()
+    {
+        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+            $app = new Application();
+
+            $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml"));
+
+            $this->assertTrue($app['debug']);
+            $this->assertEquals('%data%', $app['data']);
+        }
+        else {
+            $this->markTestIncomplete();
+        }
+    }
+
+    public function testRegisterYamlWithReplacement()
+    {
+        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+            $app = new Application();
+
+            $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml", array(
+                'data' => 'test-replacement'
+            )));
+
+            $this->assertEquals('test-replacement', $app['data']);
+        }
+        else {
+            $this->markTestIncomplete();
+        }
+    }
 }

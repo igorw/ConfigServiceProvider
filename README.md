@@ -1,8 +1,10 @@
 # ConfigServiceProvider
 
-A JSON-based config ServiceProvider for [Silex](http://silex.sensiolabs.org).
+A JSON/Yaml-based config ServiceProvider for [Silex](http://silex.sensiolabs.org).
 
 ## Usage
+
+### Passing a config file
 
 Pass the config file's path to the service provider's constructor. This is the
 recommended way of doing it, allowing you to define multiple environments.
@@ -33,6 +35,8 @@ Or in nginx with fcgi:
 
     fastcgi_param APP_ENV dev
 
+### Replacements
+
 Also, you can pass an array of replacement patterns as second argument.
 
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.json", array(
@@ -46,3 +50,15 @@ Now you can use the pattern in your configuration file.
     {
         "xsl.path": "%data_path%/xsl"
     }
+
+### Using Yaml instead of JSON
+
+To use Yaml instead of JSON, just pass a file that ends on `.yml`:
+
+    $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.yml"));
+
+### Multiple config files
+
+You can use multiple config files, e. g. one for a whole application and a
+specific one for a task by calling `$app->register()` several times, each time
+passing another instance of `Igorw\Silex\ConfigServiceProvider`.
