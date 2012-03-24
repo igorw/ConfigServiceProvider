@@ -17,41 +17,14 @@ use Symfony\Component\Yaml\Yaml;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
-    /**
-     * filename
-     *
-     * @var string
-     */
     private $filename;
 
-    /**
-     * format (json|yaml)
-     *
-     * @var string
-     */
     private $format;
 
-    /**
-     * accepted file formats
-     *
-     * @var string
-     */
     protected $validFormats = array('json', 'yaml');
 
-    /**
-     * array of tokens with replacement values
-     *
-     * @var array
-     */
     private $replacements = array();
 
-    /**
-     * pass configuration file and (optional) replacements
-     *
-     * @param string $filename
-     * @param array $replacements
-     * @return void
-     */
     public function __construct($filename, array $replacements = array())
     {
         $this->filename = $filename;
@@ -64,12 +37,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
     }
 
-    /**
-     * register the ConfigServiceProvider in Silex application
-     *
-     * @param Application $app
-     * @return void
-     */
     public function register(Application $app)
     {
         if (null === ($config = $this->readConfig())) {
@@ -82,12 +49,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
     }
 
-    /**
-     * replace tokens within a single or an array of config values
-     *
-     * @param string|array $value
-     * @return string|array
-     */
     private function doReplacements($value)
     {
         if (!$this->replacements) {
@@ -105,12 +66,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
         return strtr($value, $this->replacements);
     }
 
-    /**
-     * set format by filename extension, ensure it's supported
-     *
-     * @param string $filename (optional / $this->filename used by default)
-     * @return void
-     */
     private function setFormatByFilename($filename = null)
     {
         $filename = $filename ? $filename : $this->filename;
@@ -121,9 +76,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
     }
 
-    /**
-     * read config from file passed with __construct()
-     */
     private function readConfig()
     {
         $config = null;
