@@ -1,9 +1,7 @@
 {
     "name": "igorw/config-service-provider",
-    "type": "library",
-    "description": "A JSON-based config ServiceProvider for Silex.",
+    "description": "A JSON/Yaml-based config ServiceProvider for Silex.",
     "keywords": ["silex"],
-    "version": "0.1.0",
     "license": "MIT",
     "authors": [
         {
@@ -16,7 +14,7 @@
         }
     ],
     "require": {
-        "silex/silex": "dev-master"
+        "silex/silex": "1.0.*"
     },
     "suggest": {
         "symfony/yaml": "2.1.*"
