@@ -11,8 +11,8 @@
             "email": "igor@wiedler.ch"
         },
         {
-            "name": "Tim Heil",
-            "email": "tim.heil@webentwickler.cc"
+            "name": "Contributors",
+            "homepage": "https://github.com/igorw/ConfigServiceProvider/contributors"
         }
     ],
     "require": {
