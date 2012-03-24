@@ -57,6 +57,8 @@ To use Yaml instead of JSON, just pass a file that ends on `.yml`:
 
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.yml"));
 
+Note, you will have to require the `2.1.*` of the `symfony/yaml` package.
+
 ### Multiple config files
 
 You can use multiple config files, e. g. one for a whole application and a
