@@ -40,6 +40,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
     }
 
+    public function boot(Application $app)
+    {
+    }
+
     private function doReplacements($value)
     {
         if (!$this->replacements) {
