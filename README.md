@@ -14,13 +14,13 @@ recommended way of doing it, allowing you to define multiple environments.
 
 Now you can specify a `prod` and a `dev` environment.
 
-**/config/prod.json**
+**config/prod.json**
 
     {
         "debug": false
     }
 
-**/config/dev.json**
+**config/dev.json**
 
     {
         "debug": true
