@@ -21,5 +21,10 @@
     },
     "autoload": {
         "psr-0": { "Igorw\\Silex": "src" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0"
+        }
     }
 }
