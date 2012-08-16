@@ -27,8 +27,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.json"));
 
-        $this->assertTrue($app['debug']);
-        $this->assertEquals('%data%', $app['data']);
+        $this->assertSame(true, $app['debug']);
+        $this->assertSame('%data%', $app['data']);
     }
 
     public function testRegisterWithReplacement()
@@ -39,7 +39,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             'data' => 'test-replacement'
         )));
 
-        $this->assertEquals('test-replacement', $app['data']);
+        $this->assertSame(true, $app['debug']);
+        $this->assertSame('test-replacement', $app['data']);
     }
 
     public function testRegisterYamlWithoutReplacement()
@@ -49,8 +50,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
             $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml"));
 
-            $this->assertTrue($app['debug']);
-            $this->assertEquals('%data%', $app['data']);
+            $this->assertSame(true, $app['debug']);
+            $this->assertSame('%data%', $app['data']);
         }
         else {
             $this->markTestIncomplete();
@@ -66,7 +67,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
                 'data' => 'test-replacement'
             )));
 
-            $this->assertEquals('test-replacement', $app['data']);
+            $this->assertSame('test-replacement', $app['data']);
         }
         else {
             $this->markTestIncomplete();

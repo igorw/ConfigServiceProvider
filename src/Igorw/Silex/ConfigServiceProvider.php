@@ -58,7 +58,11 @@ class ConfigServiceProvider implements ServiceProviderInterface
             return $value;
         }
 
-        return strtr($value, $this->replacements);
+        if (is_string($value)) {
+            return strtr($value, $this->replacements);
+        }
+
+        return $value;
     }
 
     private function readConfig()
