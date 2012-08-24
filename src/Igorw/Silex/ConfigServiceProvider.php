@@ -67,8 +67,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function readConfig()
     {
-        $format = pathinfo($this->filename, PATHINFO_EXTENSION);
-
+        $format = $this->getFileFormat($this->filename);
         if (!$this->filename || !$format) {
             throw new \RuntimeException('A valid configuration file must be passed before reading the config.');
         }
@@ -78,7 +77,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 sprintf("The config file '%s' does not exist.", $this->filename));
         }
 
-        if ('yml' === $format) {
+        if ('yaml' === $format) {
             if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
                 throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
             }
@@ -92,5 +91,17 @@ class ConfigServiceProvider implements ServiceProviderInterface
         throw new \InvalidArgumentException(
                 sprintf("The config file '%s' appears has invalid format '%s'.", $this->filename, $format));
     }
+
+    public function getFileFormat($filename = null) {
+        $filename = $filename ?: $this->filename;
+        $fileEnding = str_replace('yml', 'yaml', pathinfo($filename, PATHINFO_EXTENSION));
+        if ('dist' === $fileEnding) {
+          return $this->getFileFormat(pathinfo($filename, PATHINFO_FILENAME));
+        }
+
+        return $fileEnding;
+
+    }
+
 
 }
