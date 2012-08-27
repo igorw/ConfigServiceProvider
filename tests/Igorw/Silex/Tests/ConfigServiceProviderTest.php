@@ -73,4 +73,30 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             $this->markTestIncomplete();
         }
     }
+
+    public function testGetFileFormatWithYaml() {
+            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yaml");
+            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
+    }
+
+    public function testGetFileFormatWithYml() {
+            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yml");
+            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
+    }
+
+    public function testGetFileFormatWithYamlDist() {
+            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yaml.dist");
+            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
+    }
+
+    public function testGetFileFormatWithJson() {
+            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.json");
+            $this->assertSame('json', $configServiceProvider->getFileFormat());
+    }
+
+    public function testGetFileFormatWithJsonDist() {
+            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.json.dist");
+            $this->assertSame('json', $configServiceProvider->getFileFormat());
+    }
+
 }
