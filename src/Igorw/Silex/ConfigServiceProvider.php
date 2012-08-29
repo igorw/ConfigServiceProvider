@@ -67,7 +67,8 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function readConfig()
     {
-        $format = $this->getFileFormat($this->filename);
+        $format = $this->getFileFormat();
+
         if (!$this->filename || !$format) {
             throw new \RuntimeException('A valid configuration file must be passed before reading the config.');
         }
@@ -92,16 +93,18 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 sprintf("The config file '%s' appears has invalid format '%s'.", $this->filename, $format));
     }
 
-    public function getFileFormat($filename = null) {
-        $filename = $filename ?: $this->filename;
-        $fileEnding = str_replace('yml', 'yaml', pathinfo($filename, PATHINFO_EXTENSION));
-        if ('dist' === $fileEnding) {
-          return $this->getFileFormat(pathinfo($filename, PATHINFO_FILENAME));
+    public function getFileFormat()
+    {
+        $filename = $this->filename;
+
+        if (preg_match('#.ya?ml(.dist)?$#i', $filename)) {
+            return 'yaml';
         }
 
-        return $fileEnding;
+        if (preg_match('#.json(.dist)?$#i', $filename)) {
+            return 'json';
+        }
 
+        return pathinfo($filename, PATHINFO_EXTENSION);
     }
-
-
 }

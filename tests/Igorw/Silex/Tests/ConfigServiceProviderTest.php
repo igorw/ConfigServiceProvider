@@ -74,29 +74,23 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetFileFormatWithYaml() {
-            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yaml");
-            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
+    /**
+     * @dataProvider provideFilenames
+     */
+    public function testGetFileFormat($expectedFormat, $filename)
+    {
+        $configServiceProvider = new ConfigServiceProvider($filename);
+        $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
     }
 
-    public function testGetFileFormatWithYml() {
-            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yml");
-            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
+    public function provideFilenames()
+    {
+        return array(
+            'yaml'      => array('yaml', __DIR__."/Fixtures/config.yaml"),
+            'yml'       => array('yaml', __DIR__."/Fixtures/config.yml"),
+            'yaml.dist' => array('yaml', __DIR__."/Fixtures/config.yaml.dist"),
+            'json'      => array('json', __DIR__."/Fixtures/config.json"),
+            'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
+        );
     }
-
-    public function testGetFileFormatWithYamlDist() {
-            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.yaml.dist");
-            $this->assertSame('yaml', $configServiceProvider->getFileFormat());
-    }
-
-    public function testGetFileFormatWithJson() {
-            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.json");
-            $this->assertSame('json', $configServiceProvider->getFileFormat());
-    }
-
-    public function testGetFileFormatWithJsonDist() {
-            $configServiceProvider = new ConfigServiceProvider(__DIR__."/Fixtures/config.json.dist");
-            $this->assertSame('json', $configServiceProvider->getFileFormat());
-    }
-
 }
