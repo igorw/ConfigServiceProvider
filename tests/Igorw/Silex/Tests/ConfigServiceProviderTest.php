@@ -45,33 +45,31 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterYamlWithoutReplacement()
     {
-        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $app = new Application();
-
-            $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml"));
-
-            $this->assertSame(true, $app['debug']);
-            $this->assertSame('%data%', $app['data']);
-        }
-        else {
+        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
             $this->markTestIncomplete();
         }
+
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml"));
+
+        $this->assertSame(true, $app['debug']);
+        $this->assertSame('%data%', $app['data']);
     }
 
     public function testRegisterYamlWithReplacement()
     {
-        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $app = new Application();
-
-            $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml", array(
-                'data' => 'test-replacement'
-            )));
-
-            $this->assertSame('test-replacement', $app['data']);
-        }
-        else {
+        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
             $this->markTestIncomplete();
         }
+
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml", array(
+            'data' => 'test-replacement'
+        )));
+
+        $this->assertSame('test-replacement', $app['data']);
     }
 
     /**
@@ -83,29 +81,6 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
     }
 
-    public function testEmptyConfigs() {
-        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-
-            $readConfigMethod = new \ReflectionMethod(
-                'Igorw\Silex\ConfigServiceProvider', 'readConfig'
-            );
-
-            $readConfigMethod->setAccessible(TRUE);
-
-            $this->assertEquals(
-                array(),
-                $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.yml"))
-            );
-            $this->assertEquals(
-                array(),
-                $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.json"))
-            );
-        }
-        else {
-            $this->markTestIncomplete();
-        }
-    }
-
     public function provideFilenames()
     {
         return array(
@@ -114,6 +89,32 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             'yaml.dist' => array('yaml', __DIR__."/Fixtures/config.yaml.dist"),
             'json'      => array('json', __DIR__."/Fixtures/config.json"),
             'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
+        );
+    }
+
+    public function testEmptyJsonConfigs()
+    {
+        $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
+        $readConfigMethod->setAccessible(true);
+
+        $this->assertEquals(
+            array(),
+            $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.json"))
+        );
+    }
+
+    public function testEmptyYamlConfigs()
+    {
+        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+            $this->markTestIncomplete();
+        }
+
+        $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
+        $readConfigMethod->setAccessible(true);
+
+        $this->assertEquals(
+            array(),
+            $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.yml"))
         );
     }
 }
