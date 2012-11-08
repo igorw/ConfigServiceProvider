@@ -34,7 +34,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $config = $this->readConfig();
-        if (!$config) return;
+
         foreach ($config as $name => $value) {
             $app[$name] = $this->doReplacements($value);
         }
@@ -82,11 +82,13 @@ class ConfigServiceProvider implements ServiceProviderInterface
             if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
                 throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
             }
-            return Yaml::parse($this->filename);
+            $config = Yaml::parse($this->filename);
+            return ($config) ? $config : array();
         }
 
         if ('json' === $format) {
-            return json_decode(file_get_contents($this->filename), true);
+            $config = json_decode(file_get_contents($this->filename), true);
+            return ($config) ? $config : array();
         }
 
         throw new \InvalidArgumentException(
