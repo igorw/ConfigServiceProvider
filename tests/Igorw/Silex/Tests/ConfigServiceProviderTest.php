@@ -83,6 +83,29 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
     }
 
+    public function testEmptyConfigs() {
+        if (class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+
+            $readConfigMethod = new \ReflectionMethod(
+                'Igorw\Silex\ConfigServiceProvider', 'readConfig'
+            );
+
+            $readConfigMethod->setAccessible(TRUE);
+
+            $this->assertEquals(
+                array(),
+                $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.yml"))
+            );
+            $this->assertEquals(
+                array(),
+                $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.json"))
+            );
+        }
+        else {
+            $this->markTestIncomplete();
+        }
+    }
+
     public function provideFilenames()
     {
         return array(
