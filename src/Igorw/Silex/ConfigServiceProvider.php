@@ -34,7 +34,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $config = $this->readConfig();
-
+        if (!$config) return;
         foreach ($config as $name => $value) {
             $app[$name] = $this->doReplacements($value);
         }
