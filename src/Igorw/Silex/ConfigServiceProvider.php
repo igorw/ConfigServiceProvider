@@ -83,16 +83,28 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
             }
             $config = Yaml::parse($this->filename);
-            return ($config) ? $config : array();
+            return $config ?: array();
         }
 
         if ('json' === $format) {
-            $config = json_decode(file_get_contents($this->filename), true);
-            return ($config) ? $config : array();
+            $config = $this->parseJson($this->filename);
+            return $config ?: array();
         }
 
         throw new \InvalidArgumentException(
                 sprintf("The config file '%s' appears has invalid format '%s'.", $this->filename, $format));
+    }
+
+    private function parseJson($filename)
+    {
+        $json = file_get_contents($filename);
+        $json = $this->processRawJson($json);
+        return json_decode($json, true);
+    }
+
+    protected function processRawJson($json)
+    {
+        return $json;
     }
 
     public function getFileFormat()
