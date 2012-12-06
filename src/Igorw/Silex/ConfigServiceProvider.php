@@ -87,7 +87,11 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
 
         if ('json' === $format) {
-            $config = json_decode(file_get_contents($this->filename), true);
+        	$contents = file_get_contents($this->filename);
+        	$contents = preg_replace('!/\*.*?\*/!s', '', $contents);
+
+			$config = json_decode($contents, true);
+
             return ($config) ? $config : array();
         }
 
