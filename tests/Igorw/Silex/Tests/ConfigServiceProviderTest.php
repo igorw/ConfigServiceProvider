@@ -117,4 +117,34 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.yml"))
         );
     }
+
+    public function testRegisterJsonWithReplacementInJsonFile()
+    {
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.json"));
+
+        $this->assertSame( '/var/www', $app['%path%']);
+        $this->assertSame( '/var/www/web/images', $app['path.images']);
+        $this->assertSame( '/var/www/upload', $app[ 'path.upload' ]);
+        $this->assertSame( 'http://example.com', $app['%url%']);
+        $this->assertSame( 'http://example.com/images', $app['url.images']);
+    }
+
+    public function testRegisterYamlWithReplacementInYamlFile()
+    {
+        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
+            $this->markTestIncomplete();
+        }
+
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.yml"));
+
+        $this->assertSame( '/var/www', $app['%path%']);
+        $this->assertSame( '/var/www/web/images', $app['path.images']);
+        $this->assertSame( '/var/www/upload', $app[ 'path.upload' ]);
+        $this->assertSame( 'http://example.com', $app['%url%']);
+        $this->assertSame( 'http://example.com/images', $app['url.images']);
+    }
 }
