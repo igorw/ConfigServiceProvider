@@ -124,11 +124,11 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.json"));
 
-        $this->assertSame( '/var/www', $app['%path%']);
-        $this->assertSame( '/var/www/web/images', $app['path.images']);
-        $this->assertSame( '/var/www/upload', $app[ 'path.upload' ]);
-        $this->assertSame( 'http://example.com', $app['%url%']);
-        $this->assertSame( 'http://example.com/images', $app['url.images']);
+        $this->assertSame('/var/www', $app['%path%']);
+        $this->assertSame('/var/www/web/images', $app['path.images']);
+        $this->assertSame('/var/www/upload', $app['path.upload']);
+        $this->assertSame('http://example.com', $app['%url%']);
+        $this->assertSame('http://example.com/images', $app['url.images']);
     }
 
     public function testRegisterYamlWithReplacementInYamlFile()
@@ -141,10 +141,10 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.yml"));
 
-        $this->assertSame( '/var/www', $app['%path%']);
-        $this->assertSame( '/var/www/web/images', $app['path.images']);
-        $this->assertSame( '/var/www/upload', $app[ 'path.upload' ]);
-        $this->assertSame( 'http://example.com', $app['%url%']);
-        $this->assertSame( 'http://example.com/images', $app['url.images']);
+        $this->assertSame('/var/www', $app['%path%']);
+        $this->assertSame('/var/www/web/images', $app['path.images']);
+        $this->assertSame('/var/www/upload', $app['path.upload']);
+        $this->assertSame('http://example.com', $app['%url%']);
+        $this->assertSame('http://example.com/images', $app['url.images']);
     }
 }

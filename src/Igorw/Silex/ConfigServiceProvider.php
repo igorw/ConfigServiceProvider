@@ -35,9 +35,9 @@ class ConfigServiceProvider implements ServiceProviderInterface
     {
         $config = $this->readConfig();
 
-        foreach( $config as $name => $value )
-            if ( substr( $name, 0, 1 ) == '%' )
-                $this->replacements[ $name ] = (string) $value;
+        foreach ($config as $name => $value)
+            if ('%' === substr($name, 0, 1))
+                $this->replacements[$name] = (string) $value;
 
         foreach ($config as $name => $value) {
             $app[$name] = $this->doReplacements($value);
