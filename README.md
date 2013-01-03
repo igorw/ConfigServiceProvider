@@ -51,6 +51,14 @@ Now you can use the pattern in your configuration file.
         "xsl.path": "%data_path%/xsl"
     }
 
+You can also specify replacements inside the config file by using a key with
+`%foo%` notation:
+
+    {
+        "%root_path%": "../.."
+        "xsl.path": "%root_path%/xsl"
+    }
+
 ### Using Yaml instead of JSON
 
 To use Yaml instead of JSON, just pass a file that ends on `.yml`:
