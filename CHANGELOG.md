@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* 1.1.2 (2013-01-28)
+
+  * Feature: Support for plain-PHP config files
+
 * 1.1.1 (2013-01-03)
 
   * Feature: Allow defining replacements in config file (@MarcinKleczek)
