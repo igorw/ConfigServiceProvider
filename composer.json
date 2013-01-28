@@ -1,5 +1,4 @@
 {
-    "minimum-stability": "dev",
     "name": "igorw/config-service-provider",
     "description": "A JSON/Yaml-based config ServiceProvider for Silex.",
     "keywords": ["silex"],
@@ -15,13 +14,13 @@
         }
     ],
     "require": {
-        "silex/silex": "1.0.*"
+        "silex/silex": "1.0.*@dev"
     },
     "require-dev": {
-        "symfony/yaml": "2.1.*"
+        "symfony/yaml": "~2.1"
     },
     "suggest": {
-        "symfony/yaml": "2.1.*"
+        "symfony/yaml": "~2.1"
     },
     "autoload": {
         "psr-0": { "Igorw\\Silex": "src" }
