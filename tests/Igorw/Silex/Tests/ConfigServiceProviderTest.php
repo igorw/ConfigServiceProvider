@@ -15,23 +15,28 @@ use Silex\Application;
 use Igorw\Silex\ConfigServiceProvider;
 
 /**
- * ConfigServiceProvider test cases.
- *
+ * @author Igor Wiedler <igor@wiedler.ch>
  * @author Jérôme Macias <jerome.macias@gmail.com>
  */
 class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRegisterWithoutReplacement()
+    /**
+     * @dataProvider provideFilenames
+     */
+    public function testRegisterWithoutReplacement($filename)
     {
         $app = new Application();
 
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.json"));
+        $app->register(new ConfigServiceProvider($filename));
 
         $this->assertSame(true, $app['debug']);
         $this->assertSame('%data%', $app['data']);
     }
 
-    public function testRegisterWithReplacement()
+    /**
+     * @dataProvider provideFilenames
+     */
+    public function testRegisterWithReplacement($filename)
     {
         $app = new Application();
 
@@ -43,37 +48,62 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('test-replacement', $app['data']);
     }
 
-    public function testRegisterYamlWithoutReplacement()
+    /**
+     * @dataProvider provideEmptyFilenames
+     */
+    public function testEmptyConfigs($filename)
     {
-        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $this->markTestIncomplete();
-        }
+        $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
+        $readConfigMethod->setAccessible(true);
 
-        $app = new Application();
-
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml"));
-
-        $this->assertSame(true, $app['debug']);
-        $this->assertSame('%data%', $app['data']);
-    }
-
-    public function testRegisterYamlWithReplacement()
-    {
-        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $this->markTestIncomplete();
-        }
-
-        $app = new Application();
-
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config.yml", array(
-            'data' => 'test-replacement'
-        )));
-
-        $this->assertSame('test-replacement', $app['data']);
+        $this->assertEquals(
+            array(),
+            $readConfigMethod->invoke(new ConfigServiceProvider($filename))
+        );
     }
 
     /**
-     * @dataProvider provideFilenames
+     * @dataProvider provideReplacementFilenames
+     */
+    public function testInFileReplacements($filename)
+    {
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider($filename));
+
+        $this->assertSame('/var/www', $app['%path%']);
+        $this->assertSame('/var/www/web/images', $app['path.images']);
+        $this->assertSame('/var/www/upload', $app['path.upload']);
+        $this->assertSame('http://example.com', $app['%url%']);
+        $this->assertSame('http://example.com/images', $app['url.images']);
+    }
+
+    public function provideFilenames()
+    {
+        return array(
+            array(__DIR__."/Fixtures/config.json"),
+            array(__DIR__."/Fixtures/config.yml"),
+        );
+    }
+
+    public function provideReplacementFilenames()
+    {
+        return array(
+            array(__DIR__."/Fixtures/config_replacement.json"),
+            array(__DIR__."/Fixtures/config_replacement.yml"),
+        );
+    }
+
+    public function provideEmptyFilenames()
+    {
+        return array(
+            array(__DIR__."/Fixtures/config_empty.json"),
+            array(__DIR__."/Fixtures/config_empty.yml"),
+        );
+    }
+
+    /**
+     * @dataProvider provideFilenamesForFormat
      */
     public function testGetFileFormat($expectedFormat, $filename)
     {
@@ -81,7 +111,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
     }
 
-    public function provideFilenames()
+    public function provideFilenamesForFormat()
     {
         return array(
             'yaml'      => array('yaml', __DIR__."/Fixtures/config.yaml"),
@@ -90,61 +120,5 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             'json'      => array('json', __DIR__."/Fixtures/config.json"),
             'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
         );
-    }
-
-    public function testEmptyJsonConfigs()
-    {
-        $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
-        $readConfigMethod->setAccessible(true);
-
-        $this->assertEquals(
-            array(),
-            $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.json"))
-        );
-    }
-
-    public function testEmptyYamlConfigs()
-    {
-        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $this->markTestIncomplete();
-        }
-
-        $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
-        $readConfigMethod->setAccessible(true);
-
-        $this->assertEquals(
-            array(),
-            $readConfigMethod->invoke(new ConfigServiceProvider(__DIR__."/Fixtures/empty_config.yml"))
-        );
-    }
-
-    public function testRegisterJsonWithReplacementInJsonFile()
-    {
-        $app = new Application();
-
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.json"));
-
-        $this->assertSame('/var/www', $app['%path%']);
-        $this->assertSame('/var/www/web/images', $app['path.images']);
-        $this->assertSame('/var/www/upload', $app['path.upload']);
-        $this->assertSame('http://example.com', $app['%url%']);
-        $this->assertSame('http://example.com/images', $app['url.images']);
-    }
-
-    public function testRegisterYamlWithReplacementInYamlFile()
-    {
-        if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-            $this->markTestIncomplete();
-        }
-
-        $app = new Application();
-
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/config_replacement.yml"));
-
-        $this->assertSame('/var/www', $app['%path%']);
-        $this->assertSame('/var/www/web/images', $app['path.images']);
-        $this->assertSame('/var/www/upload', $app['path.upload']);
-        $this->assertSame('http://example.com', $app['%url%']);
-        $this->assertSame('http://example.com/images', $app['url.images']);
     }
 }
