@@ -1,6 +1,6 @@
 {
     "name": "igorw/config-service-provider",
-    "description": "A JSON/Yaml-based config ServiceProvider for Silex.",
+    "description": "A config ServiceProvider for Silex with support for php, json and yaml.",
     "keywords": ["silex"],
     "license": "MIT",
     "authors": [
