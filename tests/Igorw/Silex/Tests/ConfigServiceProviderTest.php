@@ -81,6 +81,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function provideFilenames()
     {
         return array(
+            array(__DIR__."/Fixtures/config.php"),
             array(__DIR__."/Fixtures/config.json"),
             array(__DIR__."/Fixtures/config.yml"),
         );
@@ -89,6 +90,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function provideReplacementFilenames()
     {
         return array(
+            array(__DIR__."/Fixtures/config_replacement.php"),
             array(__DIR__."/Fixtures/config_replacement.json"),
             array(__DIR__."/Fixtures/config_replacement.yml"),
         );
@@ -97,6 +99,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function provideEmptyFilenames()
     {
         return array(
+            array(__DIR__."/Fixtures/config_empty.php"),
             array(__DIR__."/Fixtures/config_empty.json"),
             array(__DIR__."/Fixtures/config_empty.yml"),
         );
@@ -119,6 +122,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             'yaml.dist' => array('yaml', __DIR__."/Fixtures/config.yaml.dist"),
             'json'      => array('json', __DIR__."/Fixtures/config.json"),
             'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
+            'php'       => array('php', __DIR__."/Fixtures/config.php"),
+            'php.dist'  => array('php', __DIR__."/Fixtures/config.php.dist"),
         );
     }
 }

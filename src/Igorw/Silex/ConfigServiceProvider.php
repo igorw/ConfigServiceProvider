@@ -82,6 +82,12 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 sprintf("The config file '%s' does not exist.", $this->filename));
         }
 
+        if ('php' === $format) {
+            $config = require $this->filename;
+            $config = (1 === $config) ? array() : $config;
+            return $config ?: array();
+        }
+
         if ('yaml' === $format) {
             if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
                 throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
@@ -121,6 +127,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         if (preg_match('#.json(.dist)?$#i', $filename)) {
             return 'json';
+        }
+
+        if (preg_match('#.php(.dist)?$#i', $filename)) {
+            return 'php';
         }
 
         return pathinfo($filename, PATHINFO_EXTENSION);
