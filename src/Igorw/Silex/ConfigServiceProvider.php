@@ -19,8 +19,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
 {
     private $filename;
     private $replacements = array();
+    private $useCache;
+    private $cacheKey;
 
-    public function __construct($filename, array $replacements = array())
+    public function __construct($filename, array $replacements = array(), $apcCache = false)
     {
         $this->filename = $filename;
 
@@ -29,6 +31,9 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 $this->replacements['%'.$key.'%'] = $value;
             }
         }
+
+        $this->cacheKey = __CLASS__ . $this->filename;
+        $this->useCache = $apcCache;
     }
 
     public function register(Application $app)
@@ -71,6 +76,13 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function readConfig()
     {
+        if ($this->useCache === true) {
+            $cached = $this->loadCache();
+            if ($cached !== false) {
+                return $cached;
+            }
+        }
+
         $format = $this->getFileFormat();
 
         if (!$this->filename || !$format) {
@@ -93,12 +105,12 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
             }
             $config = Yaml::parse($this->filename);
-            return $config ?: array();
+            return $this->processConfiguration($config ?: array());
         }
 
         if ('json' === $format) {
             $config = $this->parseJson($this->filename);
-            return $config ?: array();
+            return $this->processConfiguration($config ?: array());
         }
 
         throw new \InvalidArgumentException(
@@ -134,5 +146,36 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
 
         return pathinfo($filename, PATHINFO_EXTENSION);
+    }
+
+    protected function processConfiguration($config)
+    {
+        if ($this->useCache === true) {
+            if (extension_loaded('apc') === false) {
+                throw new \RuntimeException("The apc extension is not loaded. Unable to cache silex configuration.");
+            }
+            if (apc_add($this->cacheKey, $config) !== true) {
+                throw new \RuntimeException("Unable to set silex apc-config-cache.");
+            }
+        }
+
+        return $config;
+    }
+
+    protected function loadCache()
+    {
+        return apc_fetch($this->cacheKey);
+    }
+
+    public function clearCache()
+    {
+        if (apc_delete($this->cacheKey) !== true) {
+            throw new \RuntimeException("Unable to clear silex apc-config-cache.");
+        }
+    }
+
+    public function getCacheKey()
+    {
+        return $this->cacheKey;
     }
 }
