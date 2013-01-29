@@ -56,7 +56,7 @@ You can also specify replacements inside the config file by using a key with
 `%foo%` notation:
 
     {
-        "%root_path%": "../.."
+        "%root_path%": "../..",
         "xsl.path": "%root_path%/xsl"
     }
 
