@@ -40,7 +40,15 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 $this->replacements[$name] = (string) $value;
 
         foreach ($config as $name => $value) {
-            $app[$name] = $this->doReplacements($value);
+			if (isset($app[$name])){
+				$arr = $app[$name];
+				foreach($value as $sub_name => $sub_value) {
+					$arr[$sub_name] = $this->doReplacements($sub_value);
+				}
+				$app[$name] = $arr;
+			}else{
+				$app[$name] = $this->doReplacements($value);
+			}
         }
     }
 
