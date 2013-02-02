@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Igorw\Silex\Tests;
-
 use Silex\Application;
 use Igorw\Silex\ConfigServiceProvider;
 
@@ -102,28 +100,6 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(__DIR__."/Fixtures/config_empty.php"),
             array(__DIR__."/Fixtures/config_empty.json"),
             array(__DIR__."/Fixtures/config_empty.yml"),
-        );
-    }
-
-    /**
-     * @dataProvider provideFilenamesForFormat
-     */
-    public function testGetFileFormat($expectedFormat, $filename)
-    {
-        $configServiceProvider = new ConfigServiceProvider($filename);
-        $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
-    }
-
-    public function provideFilenamesForFormat()
-    {
-        return array(
-            'yaml'      => array('yaml', __DIR__."/Fixtures/config.yaml"),
-            'yml'       => array('yaml', __DIR__."/Fixtures/config.yml"),
-            'yaml.dist' => array('yaml', __DIR__."/Fixtures/config.yaml.dist"),
-            'json'      => array('json', __DIR__."/Fixtures/config.json"),
-            'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
-            'php'       => array('php', __DIR__."/Fixtures/config.php"),
-            'php.dist'  => array('php', __DIR__."/Fixtures/config.php.dist"),
         );
     }
 }

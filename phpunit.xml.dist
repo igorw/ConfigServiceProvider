@@ -2,8 +2,11 @@
 
 <phpunit colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="ConfigServiceProvider Test Suite">
-            <directory>./tests</directory>
+        <testsuite name="integration">
+            <directory>./tests/integration/</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory>./tests/unit/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
