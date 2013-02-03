@@ -39,30 +39,35 @@ class ConfigServiceProvider implements ServiceProviderInterface
             if ('%' === substr($name, 0, 1))
                 $this->replacements[$name] = (string) $value;
 
+        $this->merge($app, $config);
+    }
+
+    public function boot(Application $app)
+    {
+    }
+
+    private function merge(Application $app, array $config)
+    {
         foreach ($config as $name => $value) {
             if (isset($app[$name]) && is_array($value)) {
-                $app[$name] = $this->loop($app[$name], $value);
+                $app[$name] = $this->mergeRecursively($app[$name], $value);
             } else {
                 $app[$name] = $this->doReplacements($value);
             }
         }
     }
 
-    private function loop($arr, $value)
+    private function mergeRecursively(array $currentValue, array $newValue)
     {
-        foreach ($value as $sub_name => $sub_value) {
-            if (is_array($sub_value)) {
-                $arr[$sub_name] = $this->loop($arr[$sub_name], $sub_value);
+        foreach ($newValue as $name => $value) {
+            if (is_array($value)) {
+                $currentValue[$name] = $this->mergeRecursively($currentValue[$name], $value);
             } else {
-                $arr[$sub_name] = $this->doReplacements($sub_value);
+                $currentValue[$name] = $this->doReplacements($value);
             }
         }
 
-        return $arr;
-    }
-
-    public function boot(Application $app)
-    {
+        return $currentValue;
     }
 
     private function doReplacements($value)
