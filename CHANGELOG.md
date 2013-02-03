@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* 1.1.3 (2013-02-03)
+
+  * Feature: Recursive merging of config values (@airdeck)
+
 * 1.1.2 (2013-01-28)
 
   * Feature: Support for plain-PHP config files
