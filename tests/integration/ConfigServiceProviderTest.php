@@ -76,6 +76,31 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('http://example.com/images', $app['url.images']);
     }
 
+    /**
+     * @dataProvider provideMergeFilenames
+     */
+    public function testMergeConfigs($filenameBase, $filenameExtended)
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider($filenameBase));
+        $app->register(new ConfigServiceProvider($filenameExtended));
+
+        $this->assertSame('pdo_mysql', $app['db.options']['driver']);
+        $this->assertSame('utf8', $app['db.options']['charset']);
+        $this->assertSame('127.0.0.1', $app['db.options']['host']);
+        $this->assertSame('mydatabase', $app['db.options']['dbname']);
+        $this->assertSame('root', $app['db.options']['user']);
+        $this->assertSame(NULL, $app['db.options']['password']);
+
+        $this->assertSame("123", $app['myproject.test']['param1']);
+        $this->assertSame("456", $app['myproject.test']['param2']);
+        $this->assertSame("123", $app['myproject.test']['param3']['param2A']);
+        $this->assertSame("456", $app['myproject.test']['param3']['param2B']);
+        $this->assertSame("456", $app['myproject.test']['param3']['param2C']);
+        $this->assertSame(array(4,5,6), $app['myproject.test']['param4']);
+        $this->assertSame("456", $app['myproject.test']['param5']);
+    }
+
     public function provideFilenames()
     {
         return array(
@@ -100,6 +125,15 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(__DIR__."/Fixtures/config_empty.php"),
             array(__DIR__."/Fixtures/config_empty.json"),
             array(__DIR__."/Fixtures/config_empty.yml"),
+        );
+    }
+
+    public function provideMergeFilenames()
+    {
+        return array(
+            array(__DIR__."/Fixtures/config_base.php",__DIR__."/Fixtures/config_extend.php"),
+            array(__DIR__."/Fixtures/config_base.json",__DIR__."/Fixtures/config_extend.json"),
+            array(__DIR__."/Fixtures/config_base.yml",__DIR__."/Fixtures/config_extend.yml")
         );
     }
 }
