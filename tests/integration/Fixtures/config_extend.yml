@@ -2,7 +2,7 @@ db.options:
   host: 127.0.0.1
   dbname: mydatabase
   user: root
-  password:
+  password: ~
 myproject.test:
   param2: "456"
   param3:
