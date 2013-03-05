@@ -112,6 +112,16 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.json"));
     }
 
+    /**
+     * @test
+     * @expectedException Symfony\Component\Yaml\Exception\ParseException
+     */
+    public function invalidYamlShouldThrowException()
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.yml"));
+    }
+
     public function provideFilenames()
     {
         return array(
