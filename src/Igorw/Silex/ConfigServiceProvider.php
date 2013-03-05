@@ -145,12 +145,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
         if ('json' === $format) {
             $config = $this->parseJson($this->filename);
 
-            if (empty($config) && JSON_ERROR_NONE !== $jsonErrorCode = json_last_error()) {
-                if (null !== $jsonError = $this->getJsonError($jsonErrorCode)) {
-                    throw new \RuntimeException(
-                        sprintf('the json parser return this error "%s" in "%s"', $jsonError, $this->filename)
-                    );
-                }
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                $jsonError = $this->getJsonError(json_last_error());
+                throw new \RuntimeException(
+                    sprintf('Invalid JSON provided "%s" in "%s"', $jsonError, $this->filename));
             }
 
             return $config ?: array();
@@ -169,35 +167,15 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function getJsonError($code)
     {
-        switch ($code) {
-            case JSON_ERROR_DEPTH:
-                $error = 'The maximum stack depth has been exceeded';
-                break;
+        $errorMessages = array(
+            JSON_ERROR_DEPTH            => 'The maximum stack depth has been exceeded',
+            JSON_ERROR_STATE_MISMATCH   => 'Invalid or malformed JSON',
+            JSON_ERROR_STATE_MISMATCH   => 'Control character error, possibly incorrectly encoded',
+            JSON_ERROR_CTRL_CHAR        => 'Control character error, possibly incorrectly encoded',
+            JSON_ERROR_SYNTAX           => 'Syntax error',
+            JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded',
+        );
 
-            case JSON_ERROR_STATE_MISMATCH:
-                $error = 'Invalid or malformed JSON';
-                break;
-
-            case JSON_ERROR_STATE_MISMATCH:
-                $error = 'Control character error, possibly incorrectly encoded';
-                break;
-                
-            case JSON_ERROR_CTRL_CHAR:
-                $error = 'Control character error, possibly incorrectly encoded';
-                break;
-                
-            case JSON_ERROR_SYNTAX:
-                $error = 'Syntax error';
-                break;
-
-            case JSON_ERROR_UTF8:
-                $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
-
-            default:
-                $error = null;
-        }
-
-        return $error;
+        return isset($errorMessages[$code]) ? $errorMessages[$code] : 'Unknown JSON error';
     }
 }
