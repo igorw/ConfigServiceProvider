@@ -101,6 +101,17 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('456', $app['myproject.test']['param5']);
     }
 
+    /**
+     * @test
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Invalid JSON provided "Syntax error" in
+     */
+    public function invalidJsonShouldThrowException()
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.json"));
+    }
+
     public function provideFilenames()
     {
         return array(

@@ -176,6 +176,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
             JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded',
         );
 
-        return isset($errorMessages[$code]) ? $errorMessages[$code] : 'Unknown JSON error';
+        return isset($errorMessages[$code]) ? $errorMessages[$code] : 'Unknown';
     }
 }
