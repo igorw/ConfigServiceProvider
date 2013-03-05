@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* 1.1.4 (2013-03-05)
+
+  * Feature: Throw exception on invalid JSON (@binfo)
+
 * 1.1.3 (2013-02-03)
 
   * Feature: Recursive merging of config values (@airdeck)
