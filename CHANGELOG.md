@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* 1.1.5 (2013-03-09)
+
+  * Bugfix: Allow recursive merging of empty hash values (@fzerorubigd)
+
 * 1.1.4 (2013-03-05)
 
   * Feature: Throw exception on invalid JSON (@binfo)
