@@ -8,5 +8,5 @@ myproject.test:
     param2A: "123"
     param2B: "123"
   param4: [1, 2, 3]
-test.noparent.key: 
-  IDontKnowAnyThingAboutYAML: []
+test.noparent.key:
+  IDontKnowAnyThingAboutYAML: {}
