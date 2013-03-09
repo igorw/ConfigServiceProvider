@@ -84,7 +84,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
     private function mergeRecursively(array $currentValue, array $newValue)
     {
         foreach ($newValue as $name => $value) {
-            if (is_array($value)) {
+            if (is_array($value) && isset($currentValue[$name])) {
                 $currentValue[$name] = $this->mergeRecursively($currentValue[$name], $value);
             } else {
                 $currentValue[$name] = $this->doReplacements($value);

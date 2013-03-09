@@ -16,4 +16,7 @@ return array(
         'param4' => array(4, 5, 6),
         'param5' => '456',
     ),
+    "test.noparent.key" => array(
+		"test" => array(1,2,3,4)
+    ),
 );

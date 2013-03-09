@@ -11,5 +11,6 @@
             "param2B": "123"
         },
         "param4": [1, 2, 3]
-    }
+    },
+    "test.noparent.key" : {}
 }
