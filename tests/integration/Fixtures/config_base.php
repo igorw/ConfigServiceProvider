@@ -14,4 +14,5 @@ return array(
         ),
         'param4' => array(1, 2, 3),
      ),
+     "test.noparent.key" => array(),
 );
