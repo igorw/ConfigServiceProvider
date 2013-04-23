@@ -36,6 +36,8 @@ class GetFileFormatTest extends \PHPUnit_Framework_TestCase
             'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
             'php'       => array('php', __DIR__."/Fixtures/config.php"),
             'php.dist'  => array('php', __DIR__."/Fixtures/config.php.dist"),
+            'toml'      => array('toml', __DIR__."/Fixtures/config.toml"),
+            'toml.dist' => array('toml', __DIR__."/Fixtures/config.toml.dist"),
         );
     }
 }
