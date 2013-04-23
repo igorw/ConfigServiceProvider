@@ -20,24 +20,30 @@ class GetFileFormatTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider provideFilenamesForFormat
      */
-    public function testGetFileFormat($expectedFormat, $filename)
+    public function testGetFileFormat($filename)
     {
-        $configServiceProvider = new ConfigServiceProvider($filename);
-        $this->assertSame($expectedFormat, $configServiceProvider->getFileFormat());
+        $driver = new ChainConfigDriver(array(
+            new PhpConfigDriver(),
+            new YamlConfigDriver(),
+            new JsonConfigDriver(),
+            new TomlConfigDriver(),
+        ));
+
+        $this->assertTrue($driver->supports($filename));
     }
 
     public function provideFilenamesForFormat()
     {
         return array(
-            'yaml'      => array('yaml', __DIR__."/Fixtures/config.yaml"),
-            'yml'       => array('yaml', __DIR__."/Fixtures/config.yml"),
-            'yaml.dist' => array('yaml', __DIR__."/Fixtures/config.yaml.dist"),
-            'json'      => array('json', __DIR__."/Fixtures/config.json"),
-            'json.dist' => array('json', __DIR__."/Fixtures/config.json.dist"),
-            'php'       => array('php', __DIR__."/Fixtures/config.php"),
-            'php.dist'  => array('php', __DIR__."/Fixtures/config.php.dist"),
-            'toml'      => array('toml', __DIR__."/Fixtures/config.toml"),
-            'toml.dist' => array('toml', __DIR__."/Fixtures/config.toml.dist"),
+            'yaml'      => array(__DIR__."/Fixtures/config.yaml"),
+            'yml'       => array(__DIR__."/Fixtures/config.yml"),
+            'yaml.dist' => array(__DIR__."/Fixtures/config.yaml.dist"),
+            'json'      => array(__DIR__."/Fixtures/config.json"),
+            'json.dist' => array(__DIR__."/Fixtures/config.json.dist"),
+            'php'       => array(__DIR__."/Fixtures/config.php"),
+            'php.dist'  => array(__DIR__."/Fixtures/config.php.dist"),
+            'toml'      => array(__DIR__."/Fixtures/config.toml"),
+            'toml.dist' => array(__DIR__."/Fixtures/config.toml.dist"),
         );
     }
 }

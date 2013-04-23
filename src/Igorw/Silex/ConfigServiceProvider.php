@@ -13,15 +13,14 @@ namespace Igorw\Silex;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Symfony\Component\Yaml\Yaml;
-use Toml\Parser;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
     private $filename;
     private $replacements = array();
+    private $driver;
 
-    public function __construct($filename, array $replacements = array())
+    public function __construct($filename, array $replacements = array(), ConfigDriver $driver = null)
     {
         $this->filename = $filename;
 
@@ -30,6 +29,13 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 $this->replacements['%'.$key.'%'] = $value;
             }
         }
+
+        $this->driver = $driver ?: new ChainConfigDriver(array(
+            new PhpConfigDriver(),
+            new YamlConfigDriver(),
+            new JsonConfigDriver(),
+            new TomlConfigDriver(),
+        ));
     }
 
     public function register(Application $app)
@@ -45,34 +51,6 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     public function boot(Application $app)
     {
-    }
-
-    public function getFileFormat()
-    {
-        $filename = $this->filename;
-
-        if (preg_match('#.ya?ml(.dist)?$#i', $filename)) {
-            return 'yaml';
-        }
-
-        if (preg_match('#.json(.dist)?$#i', $filename)) {
-            return 'json';
-        }
-
-        if (preg_match('#.php(.dist)?$#i', $filename)) {
-            return 'php';
-        }
-
-        if (preg_match('#.toml(.dist)?$#i', $filename)) {
-            return 'toml';
-        }
-
-        return pathinfo($filename, PATHINFO_EXTENSION);
-    }
-
-    protected function processRawJson($json)
-    {
-        return $json;
     }
 
     private function merge(Application $app, array $config)
@@ -122,9 +100,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function readConfig()
     {
-        $format = $this->getFileFormat();
-
-        if (!$this->filename || !$format) {
+        if (!$this->filename) {
             throw new \RuntimeException('A valid configuration file must be passed before reading the config.');
         }
 
@@ -133,62 +109,11 @@ class ConfigServiceProvider implements ServiceProviderInterface
                 sprintf("The config file '%s' does not exist.", $this->filename));
         }
 
-        if ('php' === $format) {
-            $config = require $this->filename;
-            $config = (1 === $config) ? array() : $config;
-            return $config ?: array();
-        }
-
-        if ('yaml' === $format) {
-            if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
-                throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
-            }
-            $config = Yaml::parse($this->filename);
-            return $config ?: array();
-        }
-
-        if ('json' === $format) {
-            $config = $this->parseJson($this->filename);
-
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                $jsonError = $this->getJsonError(json_last_error());
-                throw new \RuntimeException(
-                    sprintf('Invalid JSON provided "%s" in "%s"', $jsonError, $this->filename));
-            }
-
-            return $config ?: array();
-        }
-
-        if ('toml' === $format) {
-            if (!class_exists('Toml\\Parser')) {
-                throw new \RuntimeException('Unable to read toml as the Toml Parser is not installed.');
-            }
-
-            $config = Parser::fromFile($this->filename);
-            return $config ?: array();
+        if ($this->driver->supports($this->filename)) {
+            return $this->driver->load($this->filename);
         }
 
         throw new \InvalidArgumentException(
-                sprintf("The config file '%s' appears has invalid format '%s'.", $this->filename, $format));
-    }
-
-    private function parseJson($filename)
-    {
-        $json = file_get_contents($filename);
-        $json = $this->processRawJson($json);
-        return json_decode($json, true);
-    }
-
-    private function getJsonError($code)
-    {
-        $errorMessages = array(
-            JSON_ERROR_DEPTH            => 'The maximum stack depth has been exceeded',
-            JSON_ERROR_STATE_MISMATCH   => 'Invalid or malformed JSON',
-            JSON_ERROR_CTRL_CHAR        => 'Control character error, possibly incorrectly encoded',
-            JSON_ERROR_SYNTAX           => 'Syntax error',
-            JSON_ERROR_UTF8             => 'Malformed UTF-8 characters, possibly incorrectly encoded',
-        );
-
-        return isset($errorMessages[$code]) ? $errorMessages[$code] : 'Unknown';
+                sprintf("The config file '%s' appears to have an invalid format.", $this->filename));
     }
 }

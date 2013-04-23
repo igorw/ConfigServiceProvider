@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+* 1.2.0 (2013-04-23)
+
+  * BC break: Re-organized things into drivers
+  * Feature: Support for TOML format (@raphaelstolt)
+
 * 1.1.5 (2013-03-09)
 
   * Bugfix: Allow recursive merging of empty hash values (@fzerorubigd)
