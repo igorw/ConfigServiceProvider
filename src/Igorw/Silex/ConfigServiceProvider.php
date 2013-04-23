@@ -14,6 +14,7 @@ namespace Igorw\Silex;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
+use Toml\Parser;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
@@ -60,6 +61,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         if (preg_match('#.php(.dist)?$#i', $filename)) {
             return 'php';
+        }
+
+        if (preg_match('#.toml(.dist)?$#i', $filename)) {
+            return 'toml';
         }
 
         return pathinfo($filename, PATHINFO_EXTENSION);
@@ -151,6 +156,15 @@ class ConfigServiceProvider implements ServiceProviderInterface
                     sprintf('Invalid JSON provided "%s" in "%s"', $jsonError, $this->filename));
             }
 
+            return $config ?: array();
+        }
+
+        if ('toml' === $format) {
+            if (!class_exists('Toml\\Parser')) {
+                throw new \RuntimeException('Unable to read toml as the Toml Parser is not installed.');
+            }
+
+            $config = Parser::fromFile($this->filename);
             return $config ?: array();
         }
 

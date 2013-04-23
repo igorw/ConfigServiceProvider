@@ -75,6 +75,35 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('http://example.com', $app['%url%']);
         $this->assertSame('http://example.com/images', $app['url.images']);
     }
+    /**
+     * Currently not tested via testMergeConfigs as TOML seems to have problems
+     * to create 'db.options' keys
+     */
+    public function testTomlMergeConfigs()
+    {
+        $app = new Application();
+
+        $filenameBase = __DIR__."/Fixtures/config_base.toml";
+        $filenameExtended = __DIR__."/Fixtures/config_extend.toml";
+
+        $app->register(new ConfigServiceProvider($filenameBase));
+        $app->register(new ConfigServiceProvider($filenameExtended));
+
+        $this->assertSame('pdo_mysql', $app['db']['driver']);
+        $this->assertSame('utf8', $app['db']['charset']);
+        $this->assertSame('127.0.0.1', $app['db']['host']);
+        $this->assertSame('mydatabase', $app['db']['dbname']);
+        $this->assertSame('root', $app['db']['user']);
+        $this->assertSame('', $app['db']['password']);
+
+        $this->assertSame('123', $app['myproject']['param1']);
+        $this->assertSame('456', $app['myproject']['param2']);
+        $this->assertSame('456', $app['myproject']['param3']);
+        $this->assertSame(array(4, 5, 6), $app['myproject']['param4']);
+        $this->assertSame('456', $app['myproject']['param5']);
+
+        $this->assertSame(array(1, 2, 3, 4), $app['keys']['set']);
+    }
 
     /**
      * @dataProvider provideMergeFilenames
@@ -124,12 +153,23 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.yml"));
     }
 
+    /**
+     * @test
+     * @expectedException \Exception
+     */
+    public function invalidTomlShouldThrowException()
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.toml"));
+    }
+
     public function provideFilenames()
     {
         return array(
             array(__DIR__."/Fixtures/config.php"),
             array(__DIR__."/Fixtures/config.json"),
             array(__DIR__."/Fixtures/config.yml"),
+            array(__DIR__."/Fixtures/config.toml"),
         );
     }
 
@@ -139,6 +179,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(__DIR__."/Fixtures/config_replacement.php"),
             array(__DIR__."/Fixtures/config_replacement.json"),
             array(__DIR__."/Fixtures/config_replacement.yml"),
+            array(__DIR__."/Fixtures/config_replacement.toml"),
         );
     }
 
@@ -148,6 +189,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(__DIR__."/Fixtures/config_empty.php"),
             array(__DIR__."/Fixtures/config_empty.json"),
             array(__DIR__."/Fixtures/config_empty.yml"),
+            array(__DIR__."/Fixtures/config_empty.toml"),
         );
     }
 
