@@ -1,7 +1,7 @@
 # ConfigServiceProvider
 
 A config ServiceProvider for [Silex](http://silex.sensiolabs.org) with support
-for php, json and yaml.
+for php, json, yaml, and toml.
 
 ## Usage
 
@@ -67,6 +67,16 @@ To use Yaml instead of JSON, just pass a file that ends on `.yml`:
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.yml"));
 
 Note, you will have to require the `~2.1` of the `symfony/yaml` package.
+
+### Using TOML
+
+To use [TOML](https://github.com/mojombo/toml) instead of any of the other supported formats,
+just pass a file that ends on `.toml`:
+
+    $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.toml"));
+
+Note, you will have to require the `~0.1` of the `jamesmoss/toml` package and you are using
+a bleeding edge configuration format, as the spec of TOML is still subject to change.
 
 ### Using plain PHP
 
