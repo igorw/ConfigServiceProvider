@@ -94,3 +94,15 @@ config data, and also make sure it ends with `.php`:
 You can use multiple config files, e. g. one for a whole application and a
 specific one for a task by calling `$app->register()` several times, each time
 passing another instance of `Igorw\Silex\ConfigServiceProvider`.
+
+
+### Multiple config files with YAML
+
+You can use the `imports` declaration to import multiple config files into one file
+
+    imports:
+        - { resource: config.yml }
+        - { resource: parameters_dev.yml }
+        - { resource: db/db_dev.yml }
+
+    debug: true
