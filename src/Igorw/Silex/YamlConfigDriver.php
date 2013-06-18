@@ -38,7 +38,7 @@ class YamlConfigDriver implements ConfigDriver
                     $importedConfig = array_merge($importedConfig, $imported);
                 }
             }
-            $config = array_merge($config, $importedConfig);
+            $config = array_merge($importedConfig, $config);
         }
 
         return $config;
