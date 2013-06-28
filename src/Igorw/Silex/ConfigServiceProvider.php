@@ -44,7 +44,11 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         foreach ($config as $name => $value)
             if ('%' === substr($name, 0, 1))
-                $this->replacements[$name] = (string) $value;
+                $this->replacements[$name] = preg_replace_callback(
+                    '/(%.+%)/U', function($matches) use ($config) {
+                        return $config[$matches[0]];
+                    },
+                    (string) $value);
 
         $this->merge($app, $config);
     }
