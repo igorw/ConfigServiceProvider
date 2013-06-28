@@ -46,7 +46,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
             if ('%' === substr($name, 0, 1))
                 $this->replacements[$name] = preg_replace_callback(
                     '/(%.+%)/U', function($matches) use ($config) {
-                        return $config[$matches[0]];
+                        return $this->replacements[$matches[0]];
                     },
                     (string) $value);
 
