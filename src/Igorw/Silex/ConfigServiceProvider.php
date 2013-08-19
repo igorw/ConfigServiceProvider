@@ -55,10 +55,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
     {
     }
 
-    private function merge(Application $app, array $config, $prefix = null)
+    private function merge(Application $app, array $config)
     {
-        if ($prefix = $prefix ?: $this->prefix) {
-            $config = array($prefix => $config);
+        if ($this->prefix) {
+            $config = array($this->prefix => $config);
         }
 
         foreach ($config as $name => $value) {
