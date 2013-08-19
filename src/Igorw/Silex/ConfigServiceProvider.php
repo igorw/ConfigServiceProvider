@@ -19,10 +19,12 @@ class ConfigServiceProvider implements ServiceProviderInterface
     private $filename;
     private $replacements = array();
     private $driver;
+    private $prefix = null;
 
-    public function __construct($filename, array $replacements = array(), ConfigDriver $driver = null)
+    public function __construct($filename, array $replacements = array(), ConfigDriver $driver = null, $prefix = null)
     {
         $this->filename = $filename;
+        $this->prefix = $prefix;
 
         if ($replacements) {
             foreach ($replacements as $key => $value) {
@@ -53,8 +55,12 @@ class ConfigServiceProvider implements ServiceProviderInterface
     {
     }
 
-    private function merge(Application $app, array $config)
+    private function merge(Application $app, array $config, $prefix = null)
     {
+        if ($prefix = $prefix ?: $this->prefix) {
+            $config = array($prefix => $config);
+        }
+
         foreach ($config as $name => $value) {
             if (isset($app[$name]) && is_array($value)) {
                 $app[$name] = $this->mergeRecursively($app[$name], $value);
