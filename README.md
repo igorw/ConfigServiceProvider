@@ -15,6 +15,8 @@ recommended way of doing it, allowing you to define multiple environments.
 
 Now you can specify a `prod` and a `dev` environment.
 
+Make sure you register ConfigServiceProvider last. If you do not do this, any other Providers will use their default values instead of those provided by your config.
+
 **config/prod.json**
 
     {
