@@ -98,4 +98,4 @@ passing another instance of `Igorw\Silex\ConfigServiceProvider`.
 ### Register order
 
 Make sure you register ConfigServiceProvider last with your application. If you do not do this,
-any other Providers will use their default values instead of those provided by your config.
+the default values of those Providers will override your configuration.
