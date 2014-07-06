@@ -106,6 +106,56 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider provideFilenames
+     */
+    public function testConfigWithPrefix($filename)
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider($filename, array(), null, 'prefix'));
+        $this->assertNotNull($app['prefix']);
+        $this->assertSame(true, $app['prefix']['debug']);
+        $this->assertSame('%data%', $app['prefix']['data']);
+    }
+
+    /**
+     * @dataProvider provideMergeFilenames
+     */
+    public function testMergeConfigsWithPrefix($filenameBase, $filenameExtended)
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'prefix'));
+        $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'prefix'));
+
+        $this->assertNotNull($app['prefix']);
+
+        $this->assertSame('pdo_mysql', $app['prefix']['db.options']['driver']);
+        $this->assertSame(null, $app['prefix']['db.options']['password']);
+
+        $this->assertSame('123', $app['prefix']['myproject.test']['param1']);
+        $this->assertSame('123', $app['prefix']['myproject.test']['param3']['param2A']);
+        $this->assertSame(array(4, 5, 6), $app['prefix']['myproject.test']['param4']);
+
+        $this->assertSame(array(1,2,3,4), $app['prefix']['test.noparent.key']['test']);
+    }
+
+    /**
+     * @dataProvider provideMergeFilenames
+     */
+    public function testConfigsWithMultiplePrefixes($filenameBase, $filenameExtended)
+    {
+        $app = new Application();
+        $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'base'));
+        $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'extended'));
+
+        $this->assertSame(null, $app['extended']['db.options']['password']);
+        $this->assertSame('123', $app['base']['myproject.test']['param1']);
+        $this->assertSame('123', $app['base']['myproject.test']['param3']['param2A']);
+        $this->assertSame(array(4, 5, 6), $app['extended']['myproject.test']['param4']);
+
+        $this->assertSame(array(1,2,3,4), $app['extended']['test.noparent.key']['test']);
+    }
+
+    /**
      * @dataProvider provideMergeFilenames
      */
     public function testMergeConfigs($filenameBase, $filenameExtended)
