@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* 1.2.2 (2014-07-06)
+
+  * Feature: Configuration prefix (@desyncr)
+
 * 1.2.1 (2013-05-31)
 
   * Deps: Support for 1.1 branch of silex
