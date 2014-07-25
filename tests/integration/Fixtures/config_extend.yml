@@ -12,3 +12,5 @@ myproject.test:
   param5: "456"
 test.noparent.key:
   test: [1, 2, 3, 4]
+test.string.to.array: ["bar", "baz"]
+test.string.to.empty.array: []

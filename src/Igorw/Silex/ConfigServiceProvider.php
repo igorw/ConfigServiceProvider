@@ -44,9 +44,11 @@ class ConfigServiceProvider implements ServiceProviderInterface
     {
         $config = $this->readConfig();
 
-        foreach ($config as $name => $value)
-            if ('%' === substr($name, 0, 1))
+        foreach ($config as $name => $value) {
+            if ('%' === substr($name, 0, 1)) {
                 $this->replacements[$name] = (string) $value;
+            }
+        }
 
         $this->merge($app, $config);
     }
@@ -63,7 +65,10 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         foreach ($config as $name => $value) {
             if (isset($app[$name]) && is_array($value)) {
-                $app[$name] = $this->mergeRecursively($app[$name], $value);
+                $app[$name] = $this->mergeRecursively(
+                    !is_array($app[$name]) ? array($app[$name]) : $app[$name],
+                    $value
+                );
             } else {
                 $app[$name] = $this->doReplacements($value);
             }
@@ -72,9 +77,16 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
     private function mergeRecursively(array $currentValue, array $newValue)
     {
+        if (empty($newValue)) {
+            return $newValue;
+        }
+
         foreach ($newValue as $name => $value) {
             if (is_array($value) && isset($currentValue[$name])) {
-                $currentValue[$name] = $this->mergeRecursively($currentValue[$name], $value);
+                $currentValue[$name] = $this->mergeRecursively(
+                    !is_array($currentValue[$name]) ? array($currentValue[$name]) : $currentValue[$name],
+                    $value
+                );
             } else {
                 $currentValue[$name] = $this->doReplacements($value);
             }
@@ -112,7 +124,8 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         if (!file_exists($this->filename)) {
             throw new \InvalidArgumentException(
-                sprintf("The config file '%s' does not exist.", $this->filename));
+                sprintf("The config file '%s' does not exist.", $this->filename)
+            );
         }
 
         if ($this->driver->supports($this->filename)) {
@@ -120,6 +133,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
         }
 
         throw new \InvalidArgumentException(
-                sprintf("The config file '%s' appears to have an invalid format.", $this->filename));
+            sprintf("The config file '%s' appears to have an invalid format.", $this->filename)
+        );
     }
 }

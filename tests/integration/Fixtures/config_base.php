@@ -13,6 +13,8 @@ return array(
             'param2B' => '123',
         ),
         'param4' => array(1, 2, 3),
-     ),
-     'test.noparent.key' => array(),
+    ),
+    'test.noparent.key' => array(),
+    'test.string.to.array' => 'foo',
+    'test.string.to.empty.array' => 'foo'
 );

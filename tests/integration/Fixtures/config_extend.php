@@ -5,7 +5,7 @@ return array(
         'host' => '127.0.0.1',
         'dbname' => 'mydatabase',
         'user' => 'root',
-        'password' => NULL,
+        'password' => null,
     ),
     'myproject.test' => array(
         'param2' => '456',
@@ -19,4 +19,9 @@ return array(
     'test.noparent.key' => array(
         'test' => array(1, 2, 3, 4),
     ),
+    'test.string.to.array' => array(
+        'bar',
+        'baz'
+    ),
+    'test.string.to.empty.array' => array()
 );

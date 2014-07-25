@@ -12,5 +12,7 @@
         },
         "param4": [1, 2, 3]
     },
-    "test.noparent.key" : {}
+    "test.noparent.key": {},
+    "test.string.to.array": "foo",
+    "test.string.to.empty.array": "foo"
 }

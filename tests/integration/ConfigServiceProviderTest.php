@@ -180,6 +180,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('456', $app['myproject.test']['param5']);
 
         $this->assertSame(array(1,2,3,4), $app['test.noparent.key']['test']);
+        $this->assertSame(array('bar', 'baz'), $app['test.string.to.array']);
+        $this->assertSame(array(), $app['test.string.to.empty.array']);
     }
 
     /**

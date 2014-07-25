@@ -10,3 +10,5 @@ myproject.test:
   param4: [1, 2, 3]
 test.noparent.key:
   IDontKnowAnyThingAboutYAML: {}
+test.string.to.array: "foo"
+test.string.to.empty.array: "foo"
