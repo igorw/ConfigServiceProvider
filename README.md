@@ -36,6 +36,22 @@ Or in nginx with fcgi:
 
     fastcgi_param APP_ENV dev
 
+Configuration values are set on the `$app` object. For example, to retrieve the `debug` configuration value, you can simply access the `debug` key of `$app`.
+
+    $app->get('/', function() use ($app) {
+        echo $app['debug'];
+    });
+
+In order to prevent your configuration from overriding the keys that might be set on the application, you can pass in a `prefix` to the constructor. This prefix will then be available as a key under which all your other configuration can be accessed:
+
+    $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/$env.json", array(), null, 'example'));
+
+You can now access the `debug` value defined in your configuration like this:
+
+    $app->get('/', function() use ($app) {
+        echo $app['example']['debug'];
+    });
+
 ### Replacements
 
 Also, you can pass an array of replacement patterns as second argument.
