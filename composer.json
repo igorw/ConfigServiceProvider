@@ -17,11 +17,11 @@
         "silex/silex": "~1.0"
     },
     "require-dev": {
-        "symfony/yaml": "~2.1",
+        "symfony/yaml": "~2.2",
         "jamesmoss/toml": "~0.1"
     },
     "suggest": {
-        "symfony/yaml": "~2.1",
+        "symfony/yaml": "~2.2",
         "jamesmoss/toml": "~0.1"
     },
     "autoload": {
