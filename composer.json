@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "silex/silex": "~1.0"
+        "silex/silex": "2.0.x-dev"
     },
     "require-dev": {
         "symfony/yaml": "~2.1",
@@ -25,7 +25,7 @@
         "jamesmoss/toml": "~0.1"
     },
     "autoload": {
-        "psr-0": { "Igorw\\Silex": "src" }
+        "psr-4": { "Igorw\\Silex\\": "src" }
     },
     "extra": {
         "branch-alias": {
