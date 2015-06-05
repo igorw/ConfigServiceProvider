@@ -1,5 +1,5 @@
 {
-    "name": "igorw/config-service-provider",
+    "name": "saxulum/config-service-provider",
     "description": "A config ServiceProvider for Pimple with support for php, json and yaml.",
     "keywords": ["silex", "pimple"],
     "license": "MIT",
@@ -26,6 +26,9 @@
     },
     "autoload": {
         "psr-4": { "Igorw\\Silex\\": "src/Igorw/Silex/" }
+    },
+    "replace": {
+        "igorw/config-service-provider": "self.version"
     },
     "extra": {
         "branch-alias": {
