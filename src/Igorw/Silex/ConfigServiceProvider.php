@@ -51,6 +51,17 @@ class ConfigServiceProvider implements ServiceProviderInterface
         $this->merge($app, $config);
     }
 
+    public function load()
+    {
+        $config = $this->readConfig();
+
+        foreach ($config as $name => $value)
+            if ('%' === substr($name, 0, 1))
+                $this->replacements[$name] = (string) $value;
+
+        return $config;
+    }
+
     public function boot(Application $app)
     {
     }
