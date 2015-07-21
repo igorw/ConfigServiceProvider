@@ -13,6 +13,14 @@ recommended way of doing it, allowing you to define multiple environments.
     $env = getenv('APP_ENV') ?: 'prod';
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/$env.json"));
 
+### Loading a config file (for directly reading from config file/IoC)
+
+Load the config file rather than registering with application, this is for IoC in Silex.
+
+      $env = getenv('APP_ENV') ?: 'prod';
+      $provider = new \Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/$env.json"));
+      return $provider->load();
+
 Now you can specify a `prod` and a `dev` environment.
 
 **config/prod.json**
