@@ -1,5 +1,10 @@
 # ConfigServiceProvider
 
+[![Build Status](https://api.travis-ci.org/saxulum/ConfigServiceProvider.png?branch=master)](https://travis-ci.org/saxulum/ConfigServiceProvider)
+[![Total Downloads](https://poser.pugx.org/saxulum/ConfigServiceProvider/downloads.png)](https://packagist.org/packages/saxulum/ConfigServiceProvider)
+[![Latest Stable Version](https://poser.pugx.org/saxulum/ConfigServiceProvider/v/stable.png)](https://packagist.org/packages/saxulum/ConfigServiceProvider)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/saxulum/ConfigServiceProvider/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/saxulum/ConfigServiceProvider/?branch=master)
+
 A config ServiceProvider for [Silex](http://silex.sensiolabs.org) with support
 for php, json, yaml, and toml.
 
