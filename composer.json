@@ -19,11 +19,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
-        "symfony/yaml": "~2.2",
+        "symfony/yaml": "~2.2|~3.0",
         "jamesmoss/toml": "~0.1"
     },
     "suggest": {
-        "symfony/yaml": "~2.2",
+        "symfony/yaml": "~2.2|~3.0",
         "jamesmoss/toml": "~0.1"
     },
     "autoload": {
