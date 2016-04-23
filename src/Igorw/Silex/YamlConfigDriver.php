@@ -11,7 +11,7 @@ class YamlConfigDriver implements ConfigDriver
         if (!class_exists('Symfony\\Component\\Yaml\\Yaml')) {
             throw new \RuntimeException('Unable to read yaml as the Symfony Yaml Component is not installed.');
         }
-        $config = Yaml::parse($filename);
+        $config = Yaml::parse(file_get_contents($filename));
         return $config ?: array();
     }
 
