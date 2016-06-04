@@ -14,9 +14,10 @@
         }
     ],
     "require": {
-        "silex/silex": "~1.0"
+        "silex/silex": "~2.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "^4.0",
         "symfony/yaml": "~2.1",
         "jamesmoss/toml": "~0.1"
     },
