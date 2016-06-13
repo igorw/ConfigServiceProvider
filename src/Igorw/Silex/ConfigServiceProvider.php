@@ -11,8 +11,9 @@
 
 namespace Igorw\Silex;
 
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Silex\Application;
-use Silex\ServiceProviderInterface;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
@@ -40,7 +41,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
         ));
     }
 
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $config = $this->readConfig();
 
