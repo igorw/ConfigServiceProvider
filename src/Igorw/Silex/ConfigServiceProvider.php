@@ -48,7 +48,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
             if ('%' === substr($name, 0, 1))
                 $this->replacements[$name] = (string) $value;
 
-        $this->merge($app, $config);
+        $app->config = $config;
     }
 
     public function boot(Application $app)
