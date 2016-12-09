@@ -183,6 +183,21 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider provideTreeFilenames
+     */
+    public function testRecursive($filename)
+    {
+        $app = new Application();
+
+        $app->register(new ConfigServiceProvider($filename));
+
+        $this->assertSame('/etc', $app['%dir%']);
+        $this->assertSame('/etc/apache', $app['%subdir%']);
+        $this->assertSame('/etc/apache/config', $app['%target%']);
+        $this->assertSame('/etc/apache/config/httpd.conf', $app['%main%']);
+    }
+
+    /**
      * @test
      * @expectedException RuntimeException
      * @expectedExceptionMessage Invalid JSON provided "Syntax error" in
@@ -251,4 +266,12 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
             array(__DIR__."/Fixtures/config_base.yml", __DIR__."/Fixtures/config_extend.yml"),
         );
     }
+
+    public function provideTreeFilenames()
+    {
+        return array(
+            array(__DIR__."/Fixtures/config_tree.php"),
+        );
+    }
+
 }

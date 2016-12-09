@@ -1,5 +1,5 @@
 {
-    "name": "igorw/config-service-provider",
+    "name": "danaki/config-service-provider",
     "description": "A config ServiceProvider for Silex with support for php, json and yaml.",
     "keywords": ["silex"],
     "license": "MIT",
