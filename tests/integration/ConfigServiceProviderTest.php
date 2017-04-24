@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-use Silex\Application;
 use Igorw\Silex\ConfigServiceProvider;
+use Silex\Application;
 
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Jérôme Macias <jerome.macias@gmail.com>
  */
-class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ConfigServiceProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideFilenames
@@ -27,7 +27,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new ConfigServiceProvider($filename));
 
-        $this->assertSame(true, $app['debug']);
+        $this->assertTrue($app['debug']);
         $this->assertSame('%data%', $app['data']);
     }
 
@@ -38,9 +38,9 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $app->register(new ConfigServiceProvider($filename, array(
-            'data' => 'test-replacement'
-        )));
+        $app->register(new ConfigServiceProvider($filename, [
+            'data' => 'test-replacement',
+        ]));
 
         $this->assertSame(true, $app['debug']);
         $this->assertSame('test-replacement', $app['data']);
@@ -54,8 +54,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $readConfigMethod = new \ReflectionMethod('Igorw\Silex\ConfigServiceProvider', 'readConfig');
         $readConfigMethod->setAccessible(true);
 
-        $this->assertEquals(
-            array(),
+        $this->assertSame(
+            [],
             $readConfigMethod->invoke(new ConfigServiceProvider($filename))
         );
     }
@@ -83,8 +83,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
 
-        $filenameBase = __DIR__."/Fixtures/config_base.toml";
-        $filenameExtended = __DIR__."/Fixtures/config_extend.toml";
+        $filenameBase = __DIR__.'/Fixtures/config_base.toml';
+        $filenameExtended = __DIR__.'/Fixtures/config_extend.toml';
 
         $app->register(new ConfigServiceProvider($filenameBase));
         $app->register(new ConfigServiceProvider($filenameExtended));
@@ -99,10 +99,10 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('123', $app['myproject']['param1']);
         $this->assertSame('456', $app['myproject']['param2']);
         $this->assertSame('456', $app['myproject']['param3']);
-        $this->assertSame(array(4, 5, 6), $app['myproject']['param4']);
+        $this->assertSame([4, 5, 6], $app['myproject']['param4']);
         $this->assertSame('456', $app['myproject']['param5']);
 
-        $this->assertSame(array(1, 2, 3, 4), $app['keys']['set']);
+        $this->assertSame([1, 2, 3, 4], $app['keys']['set']);
     }
 
     /**
@@ -111,7 +111,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testConfigWithPrefix($filename)
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider($filename, array(), null, 'prefix'));
+        $app->register(new ConfigServiceProvider($filename, [], null, 'prefix'));
         $this->assertNotNull($app['prefix']);
         $this->assertSame(true, $app['prefix']['debug']);
         $this->assertSame('%data%', $app['prefix']['data']);
@@ -123,8 +123,8 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testMergeConfigsWithPrefix($filenameBase, $filenameExtended)
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'prefix'));
-        $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'prefix'));
+        $app->register(new ConfigServiceProvider($filenameBase, [], null, 'prefix'));
+        $app->register(new ConfigServiceProvider($filenameExtended, [], null, 'prefix'));
 
         $this->assertNotNull($app['prefix']);
 
@@ -133,9 +133,9 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('123', $app['prefix']['myproject.test']['param1']);
         $this->assertSame('123', $app['prefix']['myproject.test']['param3']['param2A']);
-        $this->assertSame(array(4, 5, 6), $app['prefix']['myproject.test']['param4']);
+        $this->assertSame([4, 5, 6], $app['prefix']['myproject.test']['param4']);
 
-        $this->assertSame(array(1,2,3,4), $app['prefix']['test.noparent.key']['test']);
+        $this->assertSame([1,2,3,4], $app['prefix']['test.noparent.key']['test']);
     }
 
     /**
@@ -144,15 +144,15 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function testConfigsWithMultiplePrefixes($filenameBase, $filenameExtended)
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'base'));
-        $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'extended'));
+        $app->register(new ConfigServiceProvider($filenameBase, [], null, 'base'));
+        $app->register(new ConfigServiceProvider($filenameExtended, [], null, 'extended'));
 
         $this->assertSame(null, $app['extended']['db.options']['password']);
         $this->assertSame('123', $app['base']['myproject.test']['param1']);
         $this->assertSame('123', $app['base']['myproject.test']['param3']['param2A']);
-        $this->assertSame(array(4, 5, 6), $app['extended']['myproject.test']['param4']);
+        $this->assertSame([4, 5, 6], $app['extended']['myproject.test']['param4']);
 
-        $this->assertSame(array(1,2,3,4), $app['extended']['test.noparent.key']['test']);
+        $this->assertSame([1,2,3,4], $app['extended']['test.noparent.key']['test']);
     }
 
     /**
@@ -176,31 +176,31 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('123', $app['myproject.test']['param3']['param2A']);
         $this->assertSame('456', $app['myproject.test']['param3']['param2B']);
         $this->assertSame('456', $app['myproject.test']['param3']['param2C']);
-        $this->assertSame(array(4, 5, 6), $app['myproject.test']['param4']);
+        $this->assertSame([4, 5, 6], $app['myproject.test']['param4']);
         $this->assertSame('456', $app['myproject.test']['param5']);
 
-        $this->assertSame(array(1,2,3,4), $app['test.noparent.key']['test']);
+        $this->assertSame([1,2,3,4], $app['test.noparent.key']['test']);
     }
 
     /**
      * @test
-     * @expectedException RuntimeException
+     * @expectedException \RuntimeException
      * @expectedExceptionMessage Invalid JSON provided "Syntax error" in
      */
     public function invalidJsonShouldThrowException()
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.json"));
+        $app->register(new ConfigServiceProvider(__DIR__.'/Fixtures/broken.json'));
     }
 
     /**
      * @test
-     * @expectedException Symfony\Component\Yaml\Exception\ParseException
+     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
      */
     public function invalidYamlShouldThrowException()
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.yml"));
+        $app->register(new ConfigServiceProvider(__DIR__.'/Fixtures/broken.yml'));
     }
 
     /**
@@ -210,45 +210,45 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
     public function invalidTomlShouldThrowException()
     {
         $app = new Application();
-        $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.toml"));
+        $app->register(new ConfigServiceProvider(__DIR__.'/Fixtures/broken.toml'));
     }
 
     public function provideFilenames()
     {
-        return array(
-            array(__DIR__."/Fixtures/config.php"),
-            array(__DIR__."/Fixtures/config.json"),
-            array(__DIR__."/Fixtures/config.yml"),
-            array(__DIR__."/Fixtures/config.toml"),
-        );
+        return [
+            [__DIR__.'/Fixtures/config.php'],
+            [__DIR__.'/Fixtures/config.json'],
+            [__DIR__.'/Fixtures/config.yml'],
+            [__DIR__.'/Fixtures/config.toml'],
+        ];
     }
 
     public function provideReplacementFilenames()
     {
-        return array(
-            array(__DIR__."/Fixtures/config_replacement.php"),
-            array(__DIR__."/Fixtures/config_replacement.json"),
-            array(__DIR__."/Fixtures/config_replacement.yml"),
-            array(__DIR__."/Fixtures/config_replacement.toml"),
-        );
+        return [
+            [__DIR__.'/Fixtures/config_replacement.php'],
+            [__DIR__.'/Fixtures/config_replacement.json'],
+            [__DIR__.'/Fixtures/config_replacement.yml'],
+            [__DIR__.'/Fixtures/config_replacement.toml'],
+        ];
     }
 
     public function provideEmptyFilenames()
     {
-        return array(
-            array(__DIR__."/Fixtures/config_empty.php"),
-            array(__DIR__."/Fixtures/config_empty.json"),
-            array(__DIR__."/Fixtures/config_empty.yml"),
-            array(__DIR__."/Fixtures/config_empty.toml"),
-        );
+        return [
+            [__DIR__.'/Fixtures/config_empty.php'],
+            [__DIR__.'/Fixtures/config_empty.json'],
+            [__DIR__.'/Fixtures/config_empty.yml'],
+            [__DIR__.'/Fixtures/config_empty.toml'],
+        ];
     }
 
     public function provideMergeFilenames()
     {
-        return array(
-            array(__DIR__."/Fixtures/config_base.php", __DIR__."/Fixtures/config_extend.php"),
-            array(__DIR__."/Fixtures/config_base.json", __DIR__."/Fixtures/config_extend.json"),
-            array(__DIR__."/Fixtures/config_base.yml", __DIR__."/Fixtures/config_extend.yml"),
-        );
+        return [
+            [__DIR__.'/Fixtures/config_base.php', __DIR__.'/Fixtures/config_extend.php'],
+            [__DIR__.'/Fixtures/config_base.json', __DIR__.'/Fixtures/config_extend.json'],
+            [__DIR__.'/Fixtures/config_base.yml', __DIR__.'/Fixtures/config_extend.yml'],
+        ];
     }
 }

@@ -1,7 +1,7 @@
 {
-    "name": "igorw/config-service-provider",
-    "description": "A config ServiceProvider for Silex with support for php, json and yaml.",
-    "keywords": ["silex"],
+    "name": "youssman/config-service-provider",
+    "description": "A config ServiceProvider for Silex 2 with support for php, json and yaml.",
+    "keywords": ["silex 2", "php"],
     "license": "MIT",
     "authors": [
         {
@@ -14,11 +14,12 @@
         }
     ],
     "require": {
-        "silex/silex": "~1.0"
+        "silex/silex": "~2.0"
     },
     "require-dev": {
         "symfony/yaml": "~2.1",
-        "jamesmoss/toml": "~0.1"
+        "jamesmoss/toml": "~0.1",
+        "phpunit/phpunit": "^5.7.19"
     },
     "suggest": {
         "symfony/yaml": "~2.1",
