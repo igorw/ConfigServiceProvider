@@ -15,35 +15,35 @@ namespace Igorw\Silex;
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Jérôme Macias <jerome.macias@gmail.com>
  */
-class GetFileFormatTest extends \PHPUnit_Framework_TestCase
+class GetFileFormatTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider provideFilenamesForFormat
      */
     public function testGetFileFormat($filename)
     {
-        $driver = new ChainConfigDriver(array(
+        $driver = new ChainConfigDriver([
             new PhpConfigDriver(),
             new YamlConfigDriver(),
             new JsonConfigDriver(),
             new TomlConfigDriver(),
-        ));
+        ]);
 
         $this->assertTrue($driver->supports($filename));
     }
 
     public function provideFilenamesForFormat()
     {
-        return array(
-            'yaml'      => array(__DIR__."/Fixtures/config.yaml"),
-            'yml'       => array(__DIR__."/Fixtures/config.yml"),
-            'yaml.dist' => array(__DIR__."/Fixtures/config.yaml.dist"),
-            'json'      => array(__DIR__."/Fixtures/config.json"),
-            'json.dist' => array(__DIR__."/Fixtures/config.json.dist"),
-            'php'       => array(__DIR__."/Fixtures/config.php"),
-            'php.dist'  => array(__DIR__."/Fixtures/config.php.dist"),
-            'toml'      => array(__DIR__."/Fixtures/config.toml"),
-            'toml.dist' => array(__DIR__."/Fixtures/config.toml.dist"),
-        );
+        return [
+            'yaml'      => [__DIR__.'/Fixtures/config.yaml'],
+            'yml'       => [__DIR__.'/Fixtures/config.yml'],
+            'yaml.dist' => [__DIR__.'/Fixtures/config.yaml.dist'],
+            'json'      => [__DIR__.'/Fixtures/config.json'],
+            'json.dist' => [__DIR__.'/Fixtures/config.json.dist'],
+            'php'       => [__DIR__.'/Fixtures/config.php'],
+            'php.dist'  => [__DIR__.'/Fixtures/config.php.dist'],
+            'toml'      => [__DIR__.'/Fixtures/config.toml'],
+            'toml.dist' => [__DIR__.'/Fixtures/config.toml.dist'],
+        ];
     }
 }

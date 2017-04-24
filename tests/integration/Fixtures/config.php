@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
     'debug' => true,
     'data'  => '%data%',
-);
+];

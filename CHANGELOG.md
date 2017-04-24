@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+* [2.0.0] - 2017-04-24
+
+  * Upgrade to compatibility with Silex2
+
 * 1.2.2 (2014-07-06)
 
   * Feature: Configuration prefix (@desyncr)
