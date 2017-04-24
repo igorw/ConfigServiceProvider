@@ -1,7 +1,26 @@
+[![Build Status](https://travis-ci.org/youssman/ConfigServiceProvider.svg?branch=master)](https://travis-ci.org/youssman/ConfigServiceProvider)
+
+> This repo is a fork of the lib [igorw/ConfigServiceProvider](https://github.com/igorw/ConfigServiceProvider) bringing support for Silex2. A pull request was submitted but not yet accepted. 
+
 # ConfigServiceProvider
 
 A config ServiceProvider for [Silex](http://silex.sensiolabs.org) with support
 for php, json, yaml, and toml.
+
+## Installation
+
+Put these lines to your composer.json:
+
+    "require": {
+        "youssman/config-service-provider": "~2.0"
+    },
+    ...
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/youssman/ConfigServiceProvider"
+        }
+    ]  
 
 ## Usage
 
