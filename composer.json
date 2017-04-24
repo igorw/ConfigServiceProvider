@@ -19,7 +19,7 @@
     "require-dev": {
         "symfony/yaml": "~2.1",
         "jamesmoss/toml": "~0.1",
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^5.7.19"
     },
     "suggest": {
         "symfony/yaml": "~2.1",
