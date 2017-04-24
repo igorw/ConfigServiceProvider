@@ -185,7 +185,7 @@ class ConfigServiceProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage Invalid JSON provided 'Syntax error' in
+     * @expectedExceptionMessage Invalid JSON provided "Syntax error" in
      */
     public function invalidJsonShouldThrowException()
     {
