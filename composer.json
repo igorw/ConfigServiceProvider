@@ -1,5 +1,5 @@
 {
-    "name": "igorw/config-service-provider",
+    "name": "youssman/config-service-provider",
     "description": "A config ServiceProvider for Silex 2 with support for php, json and yaml.",
     "keywords": ["silex 2", "php"],
     "license": "MIT",
