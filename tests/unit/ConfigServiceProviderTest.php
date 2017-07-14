@@ -11,11 +11,13 @@
 
 namespace Igorw\Silex;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Jérôme Macias <jerome.macias@gmail.com>
  */
-class GetFileFormatTest extends \PHPUnit_Framework_TestCase
+class GetFileFormatTest extends TestCase
 {
     /**
      * @dataProvider provideFilenamesForFormat
