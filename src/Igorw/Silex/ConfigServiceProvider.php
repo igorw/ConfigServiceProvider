@@ -12,9 +12,11 @@
 namespace Igorw\Silex;
 
 use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\ServiceProviderInterface;
+use Silex\Api\BootableProviderInterface;
+use Pimple\Container;
 
-class ConfigServiceProvider implements ServiceProviderInterface
+class ConfigServiceProvider implements ServiceProviderInterface , BootableProviderInterface
 {
     private $filename;
     private $replacements = array();
@@ -40,7 +42,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
         ));
     }
 
-    public function register(Application $app)
+    public function register(Container $app)
     {
         $config = $this->readConfig();
 

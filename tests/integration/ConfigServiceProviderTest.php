@@ -11,12 +11,13 @@
 
 use Silex\Application;
 use Igorw\Silex\ConfigServiceProvider;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author Jérôme Macias <jerome.macias@gmail.com>
  */
-class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
+class ConfigServiceProviderTest extends TestCase
 {
     /**
      * @dataProvider provideFilenames

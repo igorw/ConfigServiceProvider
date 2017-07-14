@@ -6,6 +6,10 @@ class JsonConfigDriver implements ConfigDriver
 {
     public function load($filename)
     {
+
+        if (0 == filesize( $filename ) )
+            return array();
+
         $config = $this->parseJson($filename);
 
         if (JSON_ERROR_NONE !== json_last_error()) {
