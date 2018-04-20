@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Silex\Application;
+use Pimple\Container;
 use Igorw\Silex\ConfigServiceProvider;
 
 /**
@@ -23,7 +23,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterWithoutReplacement($filename)
     {
-        $app = new Application();
+        $app = new Container();
 
         $app->register(new ConfigServiceProvider($filename));
 
@@ -36,7 +36,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterWithReplacement($filename)
     {
-        $app = new Application();
+        $app = new Container();
 
         $app->register(new ConfigServiceProvider($filename, array(
             'data' => 'test-replacement'
@@ -65,7 +65,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInFileReplacements($filename)
     {
-        $app = new Application();
+        $app = new Container();
 
         $app->register(new ConfigServiceProvider($filename));
 
@@ -81,7 +81,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testTomlMergeConfigs()
     {
-        $app = new Application();
+        $app = new Container();
 
         $filenameBase = __DIR__."/Fixtures/config_base.toml";
         $filenameExtended = __DIR__."/Fixtures/config_extend.toml";
@@ -110,7 +110,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigWithPrefix($filename)
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider($filename, array(), null, 'prefix'));
         $this->assertNotNull($app['prefix']);
         $this->assertSame(true, $app['prefix']['debug']);
@@ -122,7 +122,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMergeConfigsWithPrefix($filenameBase, $filenameExtended)
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'prefix'));
         $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'prefix'));
 
@@ -143,7 +143,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigsWithMultiplePrefixes($filenameBase, $filenameExtended)
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider($filenameBase, array(), null, 'base'));
         $app->register(new ConfigServiceProvider($filenameExtended, array(), null, 'extended'));
 
@@ -160,7 +160,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMergeConfigs($filenameBase, $filenameExtended)
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider($filenameBase));
         $app->register(new ConfigServiceProvider($filenameExtended));
 
@@ -189,7 +189,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidJsonShouldThrowException()
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.json"));
     }
 
@@ -199,7 +199,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidYamlShouldThrowException()
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.yml"));
     }
 
@@ -209,7 +209,7 @@ class ConfigServiceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidTomlShouldThrowException()
     {
-        $app = new Application();
+        $app = new Container();
         $app->register(new ConfigServiceProvider(__DIR__."/Fixtures/broken.toml"));
     }
 

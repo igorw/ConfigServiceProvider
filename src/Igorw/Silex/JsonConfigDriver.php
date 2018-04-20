@@ -25,6 +25,12 @@ class JsonConfigDriver implements ConfigDriver
     private function parseJson($filename)
     {
         $json = file_get_contents($filename);
+
+        // handle empty as []
+        if(empty($json)) {
+            return array();
+        }
+
         return json_decode($json, true);
     }
 

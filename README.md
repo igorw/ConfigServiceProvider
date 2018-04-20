@@ -1,5 +1,10 @@
 # ConfigServiceProvider
 
+[![Build Status](https://api.travis-ci.org/saxulum/ConfigServiceProvider.png?branch=master)](https://travis-ci.org/saxulum/ConfigServiceProvider)
+[![Total Downloads](https://poser.pugx.org/saxulum/config-service-provider/downloads.png)](https://packagist.org/packages/saxulum/config-service-provider)
+[![Latest Stable Version](https://poser.pugx.org/saxulum/config-service-provider/v/stable.png)](https://packagist.org/packages/saxulum/config-service-provider)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/saxulum/ConfigServiceProvider/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/saxulum/ConfigServiceProvider/?branch=master)
+
 A config ServiceProvider for [Silex](http://silex.sensiolabs.org) with support
 for php, json, yaml, and toml.
 
@@ -66,7 +71,7 @@ To use Yaml instead of JSON, just pass a file that ends on `.yml`:
 
     $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/services.yml"));
 
-Note, you will have to require the `~2.1` of the `symfony/yaml` package.
+Note, you will have to require the `~2.2` of the `symfony/yaml` package.
 
 ### Using TOML
 
